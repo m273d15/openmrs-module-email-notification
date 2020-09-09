@@ -1,0 +1,1 @@
+# openmrs-module-email-notification
