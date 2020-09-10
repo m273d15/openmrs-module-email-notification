@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module configVersion="1.2">
+    <!-- Module Properties -->
+    <id>${project.parent.artifactId}</id>
+    <name>${project.parent.name}</name>
+    <version>${project.parent.version}</version>
+    <package>${project.parent.groupId}.${project.parent.artifactId}</package>
+    <author>bahmni</author>
+    <description>
+        ${project.parent.description}
+    </description>
+    <require_version>${openMRSVersion}</require_version>
+    <!-- / Module Properties -->
+
+    <!-- Module Activator -->
+    <activator>org.openmrs.module.email.notification.EmailNotificationActivator</activator>
+</module>
+
