@@ -4,4 +4,4 @@
 
 ```mvn clean package```
 
-The output file is omod/target/email-notification-1.1.0-SNAPSHOT.omod
+The output file is omod/target/email-notification-[VERSION]-SNAPSHOT.omod
