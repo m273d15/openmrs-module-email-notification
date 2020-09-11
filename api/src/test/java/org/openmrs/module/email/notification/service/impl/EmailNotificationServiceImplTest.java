@@ -10,6 +10,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.io.IOException;
+
 import static org.junit.Assert.*;
 
 public class EmailNotificationServiceImplTest extends BaseModuleContextSensitiveTest {
@@ -20,7 +22,7 @@ public class EmailNotificationServiceImplTest extends BaseModuleContextSensitive
     // Mock something to verify an email was sent
 
     @Test
-    public void shouldSendEmail() {
+    public void shouldSendEmail() throws IOException {
         emailNotificationService.sendEmail("test@gmail.com", "Test subject", "Test body");
         // TODO: add expectations
     }
