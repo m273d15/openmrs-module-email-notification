@@ -43,9 +43,9 @@
 		<dependencies>
 
 			<dependency>
-				<groupId>javax.mail</groupId>
-				<artifactId>mail</artifactId>
-				<version>1.4</version>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-email</artifactId>
+				<version>1.5</version>
 			</dependency>
 
 			<!-- Begin OpenMRS core -->

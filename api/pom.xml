@@ -16,8 +16,8 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-email</artifactId>
 		</dependency>
 
 		<!-- Begin OpenMRS core -->
