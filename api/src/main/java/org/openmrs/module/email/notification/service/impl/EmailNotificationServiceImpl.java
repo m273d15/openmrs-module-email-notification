@@ -12,12 +12,21 @@ import java.util.Properties;
 @Service("emailNotificationService")
 public class EmailNotificationServiceImpl implements EmailNotificationService {
 
-    public void sendEmail(String recipientAddress, String subject, String body) throws IOException {
+    private Properties loadConfig() {
         String propFileName = "config.properties";
         Properties emailConfig = new Properties();
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
-        emailConfig.load(inputStream);
-        inputStream.close();
+        try {
+            emailConfig.load(inputStream);
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return emailConfig;
+    }
+
+    public void sendEmail(String recipientAddress, String subject, String body) {
+        Properties emailConfig = loadConfig();
 
         HtmlEmail email = new HtmlEmail();
         try {
