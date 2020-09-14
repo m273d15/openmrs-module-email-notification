@@ -1,0 +1,6 @@
+on: [push]
+steps:
+  - name: Retrieve AWS SMTP Credentials
+    env:
+      AWS_SMTP_USERNAME: ${{ secrets.AWS_SMTP_USERNAME }}
+      AWS_SMTP_PASSWORD: ${{ secrets.AWS_SMTP_PASSWORD }}

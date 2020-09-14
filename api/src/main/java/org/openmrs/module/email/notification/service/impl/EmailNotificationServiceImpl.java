@@ -22,7 +22,10 @@ public class EmailNotificationServiceImpl implements EmailNotificationService {
         HtmlEmail email = new HtmlEmail();
         try {
             email.setHostName(emailConfig.getProperty("host"));
-            email.setAuthentication(emailConfig.getProperty("smtp_username"), emailConfig.getProperty("smtp_password"));
+            email.setAuthentication(
+                    System.getenv("AWS_SMTP_USERNAME"),
+                    System.getenv("AWS_SMTP_PASSWORD")
+            );
             email.setSmtpPort(Integer.parseInt(emailConfig.getProperty("port")));
             email.setSSLOnConnect(true);
             email.addTo(recipientAddress);
