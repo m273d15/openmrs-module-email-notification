@@ -24,6 +24,7 @@ public class EmailNotificationServiceImpl implements EmailNotificationService {
             email.setHostName(emailConfig.getProperty("host"));
             email.setAuthentication(emailConfig.getProperty("smtp_username"), emailConfig.getProperty("smtp_password"));
             email.setSmtpPort(Integer.parseInt(emailConfig.getProperty("port")));
+            email.setSSLOnConnect(true);
             email.addTo(recipientAddress);
             email.setFrom(emailConfig.getProperty("from"), emailConfig.getProperty("fromName"));
             email.setSubject(subject);
