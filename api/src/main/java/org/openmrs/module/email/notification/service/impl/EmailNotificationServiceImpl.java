@@ -27,7 +27,7 @@ public class EmailNotificationServiceImpl implements EmailNotificationService {
                 emailConfig.getString("SMTP_PASSWORD")
         );
         htmlEmail.setSmtpPort(emailConfig.getInt("PORT"));
-        htmlEmail.setSSLOnConnect(true);
+        htmlEmail.setSSLOnConnect(emailConfig.getBoolean("SSL"));
         htmlEmail.addTo(recipientAddress);
         htmlEmail.setFrom(emailConfig.getString("FROM"), emailConfig.getString("FROM_NAME"));
         htmlEmail.setSubject(subject);
