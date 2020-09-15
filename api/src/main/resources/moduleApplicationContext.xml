@@ -19,13 +19,4 @@
 
 	<!-- Add here beans related to the API context -->
 	<context:component-scan base-package="org.openmrs.module.email.notification" />
-
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list merge="true">
-				<value>org.openmrs.module.email.notification.service.EmailNotificationService</value>
-				<ref bean="emailNotificationService"/>
-			</list>
-		</property>
-	</bean>
 </beans>

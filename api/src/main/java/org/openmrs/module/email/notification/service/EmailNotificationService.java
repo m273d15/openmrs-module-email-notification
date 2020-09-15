@@ -1,7 +1,7 @@
 package org.openmrs.module.email.notification.service;
 
-import java.io.IOException;
+import org.apache.commons.mail.EmailException;
 
 public interface EmailNotificationService {
-    void sendEmail(String recipientAddress, String subject, String body) throws IOException;
+    void sendEmail(String recipientAddress, String subject, String body) throws EmailException;
 }

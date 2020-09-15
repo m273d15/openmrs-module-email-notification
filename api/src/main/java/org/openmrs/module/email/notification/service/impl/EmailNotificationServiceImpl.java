@@ -3,6 +3,8 @@ package org.openmrs.module.email.notification.service.impl;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 import org.openmrs.module.email.notification.service.EmailNotificationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -11,6 +13,12 @@ import java.util.Properties;
 
 @Service("emailNotificationService")
 public class EmailNotificationServiceImpl implements EmailNotificationService {
+    private HtmlEmail htmlEmail;
+
+    public EmailNotificationServiceImpl() {}
+    public EmailNotificationServiceImpl(HtmlEmail htmlEmail) {
+        this.htmlEmail = htmlEmail;
+    }
 
     private Properties loadConfig() {
         String propFileName = "config.properties";
@@ -25,25 +33,35 @@ public class EmailNotificationServiceImpl implements EmailNotificationService {
         return emailConfig;
     }
 
-    public void sendEmail(String recipientAddress, String subject, String body) {
+    public void sendEmail(String recipientAddress, String subject, String body) throws EmailException {
         Properties emailConfig = loadConfig();
 
-        HtmlEmail email = new HtmlEmail();
         try {
-            email.setHostName(emailConfig.getProperty("host"));
-            email.setAuthentication(
+            htmlEmail.setHostName(emailConfig.getProperty("host"));
+            htmlEmail.setAuthentication(
                     System.getenv("AWS_SMTP_USERNAME"),
                     System.getenv("AWS_SMTP_PASSWORD")
             );
-            email.setSmtpPort(Integer.parseInt(emailConfig.getProperty("port")));
-            email.setSSLOnConnect(true);
-            email.addTo(recipientAddress);
-            email.setFrom(emailConfig.getProperty("from"), emailConfig.getProperty("fromName"));
-            email.setSubject(subject);
-            email.setHtmlMsg(body);
-            email.send();
+            htmlEmail.setSmtpPort(Integer.parseInt(emailConfig.getProperty("port")));
+            htmlEmail.setSSLOnConnect(true);
+            htmlEmail.addTo(recipientAddress);
+            htmlEmail.setFrom(emailConfig.getProperty("from"), emailConfig.getProperty("fromName"));
+            htmlEmail.setSubject(subject);
+            htmlEmail.setHtmlMsg(body);
+            htmlEmail.send();
         } catch (EmailException ex) {
             System.out.println(ex);
         }
+    }
+
+    @Autowired
+    public void setHtmlEmail(HtmlEmail htmlEmail) {
+        this.htmlEmail = htmlEmail;
+    }
+
+    // TODO: move to another class
+    @Bean
+    public HtmlEmail htmlEmail() {
+        return new HtmlEmail();
     }
 }
