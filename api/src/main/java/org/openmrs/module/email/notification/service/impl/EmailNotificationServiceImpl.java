@@ -1,6 +1,5 @@
 package org.openmrs.module.email.notification.service.impl;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
@@ -12,15 +11,15 @@ import org.springframework.stereotype.Service;
 @Service("emailNotificationService")
 public class EmailNotificationServiceImpl implements EmailNotificationService {
     private HtmlEmail htmlEmail;
+    private PropertiesConfiguration emailConfig;
 
     public EmailNotificationServiceImpl() {}
-    public EmailNotificationServiceImpl(HtmlEmail htmlEmail) {
+    public EmailNotificationServiceImpl(HtmlEmail htmlEmail, PropertiesConfiguration emailConfig) {
         this.htmlEmail = htmlEmail;
+        this.emailConfig = emailConfig;
     }
 
-    public void sendEmail(String recipientAddress, String subject, String body) throws EmailException, ConfigurationException {
-        PropertiesConfiguration emailConfig = new PropertiesConfiguration("config.properties");
-
+    public void sendEmail(String recipientAddress, String subject, String body) throws EmailException {
         htmlEmail.setHostName(emailConfig.getString("HOST"));
         htmlEmail.setAuthentication(
                 emailConfig.getString("SMTP_USERNAME"),
@@ -40,7 +39,11 @@ public class EmailNotificationServiceImpl implements EmailNotificationService {
         this.htmlEmail = htmlEmail;
     }
 
-    // TODO: move to another class
+    @Autowired
+    public  void setEmailConfig(PropertiesConfiguration emailConfig) {
+        this.emailConfig = emailConfig;
+    }
+
     @Bean
     public HtmlEmail htmlEmail() {
         return new HtmlEmail();

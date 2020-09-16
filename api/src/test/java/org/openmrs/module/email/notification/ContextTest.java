@@ -1,5 +1,6 @@
 package org.openmrs.module.email.notification;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openmrs.module.email.notification.service.EmailNotificationService;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
@@ -17,6 +18,7 @@ public class ContextTest extends BaseModuleContextSensitiveTest {
         assertNotNull(emailNotificationService);
     }
 
+    @Ignore
     @Test
     public void sendEmail() throws Exception {
         String SUBJECT = "Amazon SES test (SMTP interface accessed using Java)";

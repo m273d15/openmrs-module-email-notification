@@ -1,5 +1,6 @@
 package org.openmrs.module.email.notification.service.impl;
 
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 import org.junit.Before;
@@ -19,13 +20,16 @@ public class EmailNotificationServiceImplTest {
     @Mock
     HtmlEmail htmlEmail;
 
+    @Mock
+    PropertiesConfiguration emailConfig;
+
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     @Before
     public void setUp() {
         initMocks(this);
-        emailNotificationService = new EmailNotificationServiceImpl(htmlEmail);
+        emailNotificationService = new EmailNotificationServiceImpl(htmlEmail, emailConfig);
     }
 
     @Test
