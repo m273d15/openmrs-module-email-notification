@@ -18,5 +18,5 @@
   		    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<!-- Add here beans related to the API context -->
-	<context:component-scan base-package="org.openmrs.module.email.notification" />
+	<context:component-scan base-package="org.bahmni.module.email.notification" />
 </beans>

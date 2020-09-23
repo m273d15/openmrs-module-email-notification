@@ -1,9 +1,9 @@
-package org.openmrs.module.email.notification.service.impl;
+package org.bahmni.module.email.notification.service.impl;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
-import org.openmrs.module.email.notification.service.EmailNotificationService;
+import org.bahmni.module.email.notification.service.EmailNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;

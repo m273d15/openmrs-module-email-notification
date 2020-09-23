@@ -1,4 +1,4 @@
-package org.openmrs.module.email.notification.service.impl;
+package org.bahmni.module.email.notification.service.impl;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.mail.EmailException;
@@ -8,7 +8,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
-import org.openmrs.module.email.notification.service.EmailNotificationService;
+import org.bahmni.module.email.notification.service.EmailNotificationService;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;

@@ -1,8 +1,8 @@
-package org.openmrs.module.email.notification;
+package org.bahmni.module.email.notification;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openmrs.module.email.notification.service.EmailNotificationService;
+import org.bahmni.module.email.notification.service.EmailNotificationService;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 

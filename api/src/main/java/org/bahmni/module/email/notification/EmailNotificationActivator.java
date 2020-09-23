@@ -9,7 +9,7 @@
  * under the License.
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.email.notification;
+package org.bahmni.module.email.notification;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

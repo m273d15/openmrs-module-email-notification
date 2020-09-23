@@ -1,4 +1,4 @@
-package org.openmrs.module.email.notification.service;
+package org.bahmni.module.email.notification.service;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;

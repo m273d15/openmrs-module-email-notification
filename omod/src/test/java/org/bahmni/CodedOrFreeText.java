@@ -6,7 +6,7 @@
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
-package org.openmrs;
+package org.bahmni;
 
 //TODO this dummy class is just for the sake of making SwaggerSpecificationCreatorTest pass.
 //it fails because the platform dependency version currently used, does not have this class.
