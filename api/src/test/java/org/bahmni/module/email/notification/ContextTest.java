@@ -31,6 +31,9 @@ public class ContextTest extends BaseModuleContextSensitiveTest {
         );
 
 //        emailNotificationService.sendEmail("kbondar@thoughtworks.com", SUBJECT, BODY);
-        emailNotificationService.sendEmail("hamza.kaizar@thoughtworks.com", SUBJECT, BODY);
+        emailNotificationService.create(SUBJECT, BODY, "hamza.kaizar@thoughtworks.com")
+                .addCc("hamza.kaizar@thoughtworks.com")
+                .addBcc("hamza.kaizar@thoughtworks.com")
+                .send();
     }
 }

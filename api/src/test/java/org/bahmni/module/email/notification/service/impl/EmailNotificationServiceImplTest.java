@@ -27,14 +27,17 @@ public class EmailNotificationServiceImplTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Before
-    public void setUp() {
+    public void setUp() throws EmailException {
         initMocks(this);
         emailNotificationService = new EmailNotificationServiceImpl(htmlEmail, emailConfig);
     }
 
     @Test
     public void shouldSendEmail() throws Exception {
-        emailNotificationService.sendEmail("test@gmail.com", "Test subject", "Test body");
+        emailNotificationService.create("Test subject", "Test body", "test@gmail.com")
+                .addCc("test@gmail.com")
+                .addBcc("test@gmail.com")
+                .send();
         verify(htmlEmail, times(1)).send();
     }
 
@@ -42,6 +45,9 @@ public class EmailNotificationServiceImplTest {
     public void shouldThrowEmailExceptionIfSMPTCredentialsAreNotConfigured() throws Exception {
         expectedException.expect(EmailException.class);
         when(htmlEmail.send()).thenThrow(EmailException.class);
-        emailNotificationService.sendEmail("test@gmail.com", "Test subject", "Test body");
+        emailNotificationService.create("Test subject", "Test body", "test@gmail.com")
+                .addCc("test@gmail.com")
+                .addBcc("test@gmail.com")
+                .send();
     }
 }
