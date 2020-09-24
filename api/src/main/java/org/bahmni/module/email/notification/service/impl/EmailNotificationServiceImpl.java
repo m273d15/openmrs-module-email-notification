@@ -19,6 +19,12 @@ public class EmailNotificationServiceImpl implements EmailNotificationService {
         this.emailConfig = emailConfig;
     }
 
+    /**
+     * @param     recipientAddress Email address of the recipient
+     * @param     subject          Subject of the email
+     * @param     body             Body of the email
+     * @exception EmailException   Exception thrown when email is not sent
+     */
     public void sendEmail(String recipientAddress, String subject, String body) throws EmailException {
         htmlEmail.setHostName(emailConfig.getString("SMTP_HOST"));
         htmlEmail.setAuthentication(
