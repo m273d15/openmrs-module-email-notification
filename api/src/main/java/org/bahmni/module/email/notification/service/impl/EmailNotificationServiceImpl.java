@@ -26,15 +26,15 @@ public class EmailNotificationServiceImpl implements EmailNotificationService {
      * @exception EmailException   Exception thrown when email is not sent
      */
     public void sendEmail(String recipientAddress, String subject, String body) throws EmailException {
-        htmlEmail.setHostName(emailConfig.getString("SMTP_HOST"));
+        htmlEmail.setHostName(emailConfig.getString("smtp.host"));
         htmlEmail.setAuthentication(
-                emailConfig.getString("SMTP_USERNAME"),
-                emailConfig.getString("SMTP_PASSWORD")
+                emailConfig.getString("smtp.username"),
+                emailConfig.getString("smtp.password")
         );
-        htmlEmail.setSmtpPort(emailConfig.getInt("SMTP_PORT"));
-        htmlEmail.setSSLOnConnect(emailConfig.getBoolean("SMTP_SSL"));
+        htmlEmail.setSmtpPort(emailConfig.getInt("smtp.port"));
+        htmlEmail.setSSLOnConnect(emailConfig.getBoolean("smtp.ssl"));
         htmlEmail.addTo(recipientAddress);
-        htmlEmail.setFrom(emailConfig.getString("SMTP_FROM_EMAIL_ADDRESS"), emailConfig.getString("SMTP_FROM_NAME"));
+        htmlEmail.setFrom(emailConfig.getString("smtp.from.email.address"), emailConfig.getString("smtp.from.name"));
         htmlEmail.setSubject(subject);
         htmlEmail.setHtmlMsg(body);
         htmlEmail.send();
