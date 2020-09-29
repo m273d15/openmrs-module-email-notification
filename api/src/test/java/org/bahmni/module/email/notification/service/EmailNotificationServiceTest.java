@@ -1,4 +1,4 @@
-package org.bahmni.module.email.notification.service.impl;
+package org.bahmni.module.email.notification.service;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.mail.EmailException;
@@ -8,12 +8,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
-import org.bahmni.module.email.notification.service.EmailNotificationService;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class EmailNotificationServiceImplTest {
+public class EmailNotificationServiceTest {
 
     private EmailNotificationService emailNotificationService;
 
@@ -29,7 +28,7 @@ public class EmailNotificationServiceImplTest {
     @Before
     public void setUp() throws EmailException {
         initMocks(this);
-        emailNotificationService = new EmailNotificationServiceImpl(htmlEmail, emailConfig);
+        emailNotificationService = new EmailNotificationService(htmlEmail, emailConfig);
     }
 
     @Test
