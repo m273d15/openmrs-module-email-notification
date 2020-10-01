@@ -32,6 +32,8 @@ Please follow the instructions in ContextTest.java.
 2. Copy email-notification-[VERSION].omod to /opt/openmrs/modules/
 3. Configure environment variables listed in config.properties.
 
+<sub><sup>No environment variables should contain comma, otherwise they'll be truncated when passed to Java.</sup></sub>
+
 ## Supported SMTP server
 
 This module is supposed to be able to work with any SMTP server, but it has only been tested with:
