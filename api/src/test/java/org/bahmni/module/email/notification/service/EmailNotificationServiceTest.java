@@ -7,11 +7,25 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.mockito.BDDMockito;
 import org.mockito.Mock;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.anyVararg;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({HtmlEmailFactory.class})
 public class EmailNotificationServiceTest {
 
     private EmailNotificationService emailNotificationService;
@@ -28,25 +42,51 @@ public class EmailNotificationServiceTest {
     @Before
     public void setUp() throws EmailException {
         initMocks(this);
-        emailNotificationService = new EmailNotificationService(htmlEmail, emailConfig);
+        mockStatic(HtmlEmailFactory.class);
+        PowerMockito.when(HtmlEmailFactory.getHtmlEmail()).thenReturn(htmlEmail);
+        emailNotificationService = new EmailNotificationService(emailConfig);
     }
 
     @Test
     public void shouldSendEmail() throws Exception {
-        emailNotificationService.create("Test subject", "Test body", "test@gmail.com")
-                .addCc("test@gmail.com")
-                .addBcc("test@gmail.com")
-                .send();
+        when(emailConfig.getString(anyString())).thenReturn("sth");
+        when(emailConfig.getString("smtp.from.email.address")).thenReturn("someFromAddress");
+        when(emailConfig.getString("smtp.from.name")).thenReturn("someFromName");
+        when(emailConfig.getString("smtp.host")).thenReturn("someHost");
+        when(emailConfig.getString("smtp.username")).thenReturn("someUser");
+        when(emailConfig.getString("smtp.password")).thenReturn("somePassword");
+        when(emailConfig.getInt("smtp.port")).thenReturn(123);
+        when(emailConfig.getBoolean("smtp.ssl")).thenReturn(true);
+        emailNotificationService.send("Test subject",
+                "Test body",
+                new String[]{ "test@gmail.com", "test2@gmail.com" },
+                new String[]{ "cc@gmail.com" },
+                new String[]{ "bcc@gmail.com" }
+                );
+        verify(htmlEmail).setFrom(eq("someFromAddress"), eq("someFromName"));
+        verify(htmlEmail).addTo((String[])anyVararg());
+        verify(htmlEmail).addCc((String[])anyVararg());
+        verify(htmlEmail).addBcc((String[])anyVararg());
+        verify(htmlEmail).setSubject(eq("Test subject"));
+        verify(htmlEmail).setHtmlMsg(eq("Test body"));
+        verify(htmlEmail).setHostName(eq("someHost"));
+        verify(htmlEmail).setAuthentication(eq("someUser"), eq("somePassword"));
+        verify(htmlEmail).setSmtpPort(eq(123));
+        verify(htmlEmail).setSSLOnConnect(eq(true));
         verify(htmlEmail, times(1)).send();
+        verifyStatic();
     }
 
     @Test
     public void shouldThrowEmailExceptionIfSMPTCredentialsAreNotConfigured() throws Exception {
         expectedException.expect(EmailException.class);
-        when(htmlEmail.send()).thenThrow(EmailException.class);
-        emailNotificationService.create("Test subject", "Test body", "test@gmail.com")
-                .addCc("test@gmail.com")
-                .addBcc("test@gmail.com")
-                .send();
+        BDDMockito.given(htmlEmail.send()).willThrow(new EmailException());
+        emailNotificationService.send("Test subject",
+                "Test body",
+                new String[]{ "test@gmail.com" },
+                null,
+                null
+        );
     }
+
 }

@@ -18,22 +18,20 @@ public class ContextTest extends BaseModuleContextSensitiveTest {
         assertNotNull(emailNotificationService);
     }
 
+    /**
+     * To send a test email
+     * 1) Remove @Ignore annotation below
+     * 2) Configure environment variables, see config.properties
+     * 3) Change "To" email address to yours
+     * 4) If sending via Amazon SES in sandbox, ensure your email address is added to verified email addresses
+     */
     @Ignore
     @Test
     public void sendEmail() throws Exception {
-        String SUBJECT = "Amazon SES test (SMTP interface accessed using Java)";
+        String SUBJECT = "Email test from openmrs-module-email-notification";
 
-        String BODY = String.join(
-                System.getProperty("line.separator"),
-                "<h1>Amazon SES SMTP Email Test</h1>",
-                "<p>This email was sent with Amazon SES using the ",
-                "<a href='http://commons.apache.org/proper/commons-email/'>Apache Commons Email</a> Package"
-        );
+        String BODY = "This is a test email";
 
-//        emailNotificationService.sendEmail("kbondar@thoughtworks.com", SUBJECT, BODY);
-        emailNotificationService.create(SUBJECT, BODY, "hamza.kaizar@thoughtworks.com")
-                .addCc("hamza.kaizar@thoughtworks.com")
-                .addBcc("hamza.kaizar@thoughtworks.com")
-                .send();
+        emailNotificationService.send(SUBJECT, BODY, new String[]{"your@email.com"}, null, null);
     }
 }
