@@ -33,8 +33,12 @@ public class EmailNotificationService {
                 emailConfig.getString("smtp.from.name")
         );
         htmlEmail.addTo(to);
-        htmlEmail.addCc(cc);
-        htmlEmail.addBcc(bcc);
+        if (cc != null) {
+            htmlEmail.addCc(cc);
+        }
+        if (bcc  != null) {
+            htmlEmail.addBcc(bcc);
+        }
         htmlEmail.setSubject(subject);
         htmlEmail.setHtmlMsg(body);
         htmlEmail.setHostName(emailConfig.getString("smtp.host"));

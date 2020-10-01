@@ -49,7 +49,6 @@ public class EmailNotificationServiceTest {
 
     @Test
     public void shouldSendEmail() throws Exception {
-        when(emailConfig.getString(anyString())).thenReturn("sth");
         when(emailConfig.getString("smtp.from.email.address")).thenReturn("someFromAddress");
         when(emailConfig.getString("smtp.from.name")).thenReturn("someFromName");
         when(emailConfig.getString("smtp.host")).thenReturn("someHost");
@@ -60,19 +59,34 @@ public class EmailNotificationServiceTest {
         emailNotificationService.send("Test subject",
                 "Test body",
                 new String[]{ "test@gmail.com", "test2@gmail.com" },
-                new String[]{ "cc@gmail.com" },
-                new String[]{ "bcc@gmail.com" }
+                null,
+                null
                 );
         verify(htmlEmail).setFrom(eq("someFromAddress"), eq("someFromName"));
         verify(htmlEmail).addTo((String[])anyVararg());
-        verify(htmlEmail).addCc((String[])anyVararg());
-        verify(htmlEmail).addBcc((String[])anyVararg());
+        verify(htmlEmail, times(0)).addCc((String[])anyVararg());
+        verify(htmlEmail, times(0)).addBcc((String[])anyVararg());
         verify(htmlEmail).setSubject(eq("Test subject"));
         verify(htmlEmail).setHtmlMsg(eq("Test body"));
         verify(htmlEmail).setHostName(eq("someHost"));
         verify(htmlEmail).setAuthentication(eq("someUser"), eq("somePassword"));
         verify(htmlEmail).setSmtpPort(eq(123));
         verify(htmlEmail).setSSLOnConnect(eq(true));
+        verify(htmlEmail, times(1)).send();
+        verifyStatic();
+    }
+
+    @Test
+    public void shouldSendEmailWithCcAndBcc() throws Exception {
+        when(emailConfig.getString(anyString())).thenReturn("something");
+        emailNotificationService.send("Test subject",
+                "Test body",
+                new String[]{ "test@gmail.com", "test2@gmail.com" },
+                new String[]{ "cc@gmail.com" },
+                new String[]{ "bcc@gmail.com" }
+        );
+        verify(htmlEmail).addCc((String[])anyVararg());
+        verify(htmlEmail).addBcc((String[])anyVararg());
         verify(htmlEmail, times(1)).send();
         verifyStatic();
     }
