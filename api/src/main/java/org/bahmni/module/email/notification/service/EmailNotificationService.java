@@ -18,16 +18,16 @@ public class EmailNotificationService {
     }
 
     /**
-     * @param subject         Subject of the email
-     * @param body            Body of the email
-     * @param to              Email IDs of the recipients
-     * @param cc              CC email addresses
-     * @param bcc             BCC email addresses
+     * @param  subject        Subject of the email
+     * @param  body           Body of the email
+     * @param  to             Email IDs of the recipients
+     * @param  cc             CC email addresses
+     * @param  bcc            BCC email addresses
      * @throws EmailException When email ids/body not set
      * @throws EmailException Exception thrown when email is not sent
      */
     public void send(String subject, String body, String[] to, String[] cc, String[] bcc) throws EmailException {
-        HtmlEmail htmlEmail = HtmlEmailFactory.getHtmlEmail();
+        HtmlEmail htmlEmail = new HtmlEmail();
         htmlEmail.setFrom(
                 emailConfig.getString("smtp.from.email.address"),
                 emailConfig.getString("smtp.from.name")
