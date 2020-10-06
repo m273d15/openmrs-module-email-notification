@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.assertNotNull;
 
+@Ignore
 public class ContextTest extends BaseModuleContextSensitiveTest {
 
     @Autowired
@@ -25,13 +26,13 @@ public class ContextTest extends BaseModuleContextSensitiveTest {
      * 3) Change "To" email address to yours
      * 4) If sending via Amazon SES in sandbox, ensure your email address is added to verified email addresses
      */
-    @Ignore
+
     @Test
     public void sendEmail() throws Exception {
         String SUBJECT = "Email test from openmrs-module-email-notification";
 
         String BODY = "This is a test email";
 
-        emailNotificationService.send(SUBJECT, BODY, new String[]{"your@email.com"}, null, null);
+        emailNotificationService.send(SUBJECT, BODY, new String[]{"hamza.kaizar@thoughtworks.com"}, null, null);
     }
 }
