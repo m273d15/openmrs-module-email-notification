@@ -27,7 +27,7 @@ public class EmailNotificationService {
      * @throws EmailException Exception thrown when email is not sent
      */
     public void send(String subject, String body, String[] to, String[] cc, String[] bcc) throws EmailException {
-        HtmlEmail htmlEmail = new HtmlEmail();
+        HtmlEmail htmlEmail = HtmlEmailFactory.getHtmlEmail();
         htmlEmail.setFrom(
                 emailConfig.getString("smtp.from.email.address"),
                 emailConfig.getString("smtp.from.name")
