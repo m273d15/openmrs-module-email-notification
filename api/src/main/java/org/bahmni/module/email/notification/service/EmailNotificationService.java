@@ -10,13 +10,13 @@ import java.util.Properties;
 @Service("emailNotificationService")
 public class EmailNotificationService {
 
-    private Properties emailConfig;
+    @Autowired
+    private EmailNotificationConfig emailNotificationConfig;
 
-    public EmailNotificationService() {
-    }
+    public EmailNotificationService() {}
 
-    public EmailNotificationService(Properties emailConfig) {
-        this.emailConfig = emailConfig;
+    public EmailNotificationService(EmailNotificationConfig emailNotificationConfig) {
+        this.emailNotificationConfig = emailNotificationConfig;
     }
 
     /**
@@ -30,9 +30,10 @@ public class EmailNotificationService {
      */
     public void send(String subject, String body, String[] to, String[] cc, String[] bcc) throws EmailException {
         HtmlEmail htmlEmail = HtmlEmailFactory.getHtmlEmail();
+        Properties properties = emailNotificationConfig.getProperties();
         htmlEmail.setFrom(
-                emailConfig.getProperty("smtp.from.email.address"),
-                emailConfig.getProperty("smtp.from.name")
+                properties.getProperty("smtp.from.email.address"),
+                properties.getProperty("smtp.from.name")
         );
         htmlEmail.addTo(to);
         if (cc != null) {
@@ -43,18 +44,14 @@ public class EmailNotificationService {
         }
         htmlEmail.setSubject(subject);
         htmlEmail.setHtmlMsg(body);
-        htmlEmail.setHostName(emailConfig.getProperty("smtp.host"));
+        htmlEmail.setHostName(properties.getProperty("smtp.host"));
         htmlEmail.setAuthentication(
-                emailConfig.getProperty("smtp.username"),
-                emailConfig.getProperty("smtp.password")
+                properties.getProperty("smtp.username"),
+                properties.getProperty("smtp.password")
         );
-        htmlEmail.setSmtpPort(Integer.parseInt(emailConfig.getProperty("smtp.port")));
-        htmlEmail.setSSLOnConnect(Boolean.parseBoolean(emailConfig.getProperty("smtp.ssl")));
+        htmlEmail.setSmtpPort(Integer.parseInt(properties.getProperty("smtp.port")));
+        htmlEmail.setSSLOnConnect(Boolean.parseBoolean(properties.getProperty("smtp.ssl")));
         htmlEmail.send();
     }
 
-    @Autowired
-    public void setEmailConfig(Properties emailConfig) {
-        this.emailConfig = emailConfig;
-    }
 }

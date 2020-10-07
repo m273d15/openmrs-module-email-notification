@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Properties;
 
@@ -35,7 +36,10 @@ public class EmailNotificationServiceTest {
     HtmlEmail htmlEmail;
 
     @Mock
-    Properties emailConfig;
+    private EmailNotificationConfig emailNotificationConfig;
+    
+    @Mock
+    private Properties properties;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -45,18 +49,19 @@ public class EmailNotificationServiceTest {
         initMocks(this);
         mockStatic(HtmlEmailFactory.class);
         PowerMockito.when(HtmlEmailFactory.getHtmlEmail()).thenReturn(htmlEmail);
-        emailNotificationService = new EmailNotificationService(emailConfig);
+        when(emailNotificationConfig.getProperties()).thenReturn(properties);
+        emailNotificationService = new EmailNotificationService(emailNotificationConfig);
     }
 
     @Test
     public void shouldSendEmail() throws Exception {
-        when(emailConfig.getProperty("smtp.from.email.address")).thenReturn("someFromAddress");
-        when(emailConfig.getProperty("smtp.from.name")).thenReturn("someFromName");
-        when(emailConfig.getProperty("smtp.host")).thenReturn("someHost");
-        when(emailConfig.getProperty("smtp.username")).thenReturn("someUser");
-        when(emailConfig.getProperty("smtp.password")).thenReturn("somePassword");
-        when(emailConfig.getProperty("smtp.port")).thenReturn("123");
-        when(emailConfig.getProperty("smtp.ssl")).thenReturn("TRUE");
+        when(properties.getProperty("smtp.from.email.address")).thenReturn("someFromAddress");
+        when(properties.getProperty("smtp.from.name")).thenReturn("someFromName");
+        when(properties.getProperty("smtp.host")).thenReturn("someHost");
+        when(properties.getProperty("smtp.username")).thenReturn("someUser");
+        when(properties.getProperty("smtp.password")).thenReturn("somePassword");
+        when(properties.getProperty("smtp.port")).thenReturn("123");
+        when(properties.getProperty("smtp.ssl")).thenReturn("TRUE");
         emailNotificationService.send("Test subject",
                 "Test body",
                 new String[]{ "test@gmail.com", "test2@gmail.com" },
@@ -79,7 +84,7 @@ public class EmailNotificationServiceTest {
 
     @Test
     public void shouldSendEmailWithCcAndBcc() throws Exception {
-        when(emailConfig.getProperty(anyString())).thenReturn("123");
+        when(properties.getProperty(anyString())).thenReturn("123");
         emailNotificationService.send("Test subject",
                 "Test body",
                 new String[]{ "test@gmail.com", "test2@gmail.com" },
@@ -94,7 +99,7 @@ public class EmailNotificationServiceTest {
 
     @Test
     public void shouldThrowEmailExceptionIfSMPTCredentialsAreNotConfigured() throws Exception {
-        when(emailConfig.getProperty(anyString())).thenReturn("123");
+        when(properties.getProperty(anyString())).thenReturn("123");
         expectedException.expect(EmailException.class);
         BDDMockito.given(htmlEmail.send()).willThrow(new EmailException());
         emailNotificationService.send("Test subject",

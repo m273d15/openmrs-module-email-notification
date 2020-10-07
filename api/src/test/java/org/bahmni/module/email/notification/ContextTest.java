@@ -5,10 +5,12 @@ import org.junit.Test;
 import org.bahmni.module.email.notification.service.EmailNotificationService;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.Assert.assertNotNull;
 
 @Ignore
+@TestPropertySource("classpath:email-notification.properties")
 public class ContextTest extends BaseModuleContextSensitiveTest {
 
     @Autowired
@@ -21,10 +23,9 @@ public class ContextTest extends BaseModuleContextSensitiveTest {
 
     /**
      * To send a test email
-     * 1) Remove @Ignore annotation below
-     * 2) Configure environment variables, see config.properties
+     * 1) Remove @Ignore annotation above
+     * 2) Configure SMTP credentials in src/test/resources/email-notification.properties
      * 3) Change "To" email address to yours
-     * 4) If sending via Amazon SES in sandbox, ensure your email address is added to verified email addresses
      */
 
     @Test
@@ -33,6 +34,6 @@ public class ContextTest extends BaseModuleContextSensitiveTest {
 
         String BODY = "This is a test email";
 
-        emailNotificationService.send(SUBJECT, BODY, new String[]{"hamza.kaizar@thoughtworks.com"}, null, null);
+        emailNotificationService.send(SUBJECT, BODY, new String[]{"someemail@gmail.com"}, null, null);
     }
 }

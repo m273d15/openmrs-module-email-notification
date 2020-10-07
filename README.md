@@ -28,9 +28,11 @@ Please follow the instructions in ContextTest.java.
 
 ## Deployment
 
-1. Copy dependencies jars (commons-email-1.5.jar and commons-configuration-1.10.jar) to /opt/openmrs/openmrs/WEB-INF/lib/ folder.
+1. Copy dependencies jars (commons-email-1.5.jar) to /opt/openmrs/openmrs/WEB-INF/lib/ folder.
 2. Copy email-notification-[VERSION].omod to /opt/openmrs/modules/
-3. Configure environment variables listed in config.properties.
+3. Create email-notification.properties file and 
+    configure SMTP credentials as in api/src/test/resources/email-notification.properties file.
+    Copy this file to TODO.
 
 <sub><sup>No environment variables should contain comma, otherwise they'll be truncated when passed to Java.</sup></sub>
 
