@@ -34,8 +34,6 @@ Please follow the instructions in ContextTest.java.
     configure SMTP credentials as in api/src/test/resources/email-notification.properties file.
     This file should be located at /opt/openmrs/email-notification.properties.
 
-<sub><sup>No environment variables should contain comma, otherwise they'll be truncated when passed to Java.</sup></sub>
-
 ## Supported SMTP server
 
 This module is supposed to be able to work with any SMTP server, but it has only been tested with:
