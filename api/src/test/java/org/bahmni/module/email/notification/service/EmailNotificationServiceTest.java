@@ -2,6 +2,7 @@ package org.bahmni.module.email.notification.service;
 
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
+import org.bahmni.module.email.notification.EmailNotificationException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -12,8 +13,8 @@ import org.mockito.Mock;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.IOException;
 import java.util.Properties;
 
 import static org.mockito.Mockito.anyString;
@@ -45,7 +46,7 @@ public class EmailNotificationServiceTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
         initMocks(this);
         mockStatic(HtmlEmailFactory.class);
         PowerMockito.when(HtmlEmailFactory.getHtmlEmail()).thenReturn(htmlEmail);
@@ -98,9 +99,21 @@ public class EmailNotificationServiceTest {
     }
 
     @Test
-    public void shouldThrowEmailExceptionIfSMPTCredentialsAreNotConfigured() throws Exception {
+    public void shouldThrowEmailExceptionIfPropertiesFileNotFound() throws EmailNotificationException, EmailException, IOException {
+        when(emailNotificationConfig.getProperties()).thenThrow(new IOException("Some problem"));
+        expectedException.expect(EmailNotificationException.class);
+        emailNotificationService.send("Test subject",
+                "Test body",
+                new String[]{ "test@gmail.com" },
+                null,
+                null
+        );
+    }
+
+    @Test
+    public void shouldThrowEmailExceptionIfSMPTCredentialsAreInvalid() throws EmailNotificationException, EmailException {
         when(properties.getProperty(anyString())).thenReturn("123");
-        expectedException.expect(EmailException.class);
+        expectedException.expect(EmailNotificationException.class);
         BDDMockito.given(htmlEmail.send()).willThrow(new EmailException());
         emailNotificationService.send("Test subject",
                 "Test body",
