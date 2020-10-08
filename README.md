@@ -2,7 +2,7 @@
 
 ## Build
 
-```mvn clean package```
+```mvn clean install```
 
 The output file is omod/target/email-notification-[VERSION].omod
 
