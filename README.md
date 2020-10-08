@@ -32,7 +32,7 @@ Please follow the instructions in ContextTest.java.
 2. Copy email-notification-[VERSION].omod to /opt/openmrs/modules/
 3. Create email-notification.properties file and 
     configure SMTP credentials as in api/src/test/resources/email-notification.properties file.
-    Copy this file to TODO.
+    This file should be located at /opt/openmrs/email-notification.properties.
 
 <sub><sup>No environment variables should contain comma, otherwise they'll be truncated when passed to Java.</sup></sub>
 
