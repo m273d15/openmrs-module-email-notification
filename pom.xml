@@ -33,10 +33,13 @@
 
 	<distributionManagement>
 		<snapshotRepository>
-			<id>repo.mybahmni.org</id>
-			<name>bahmni-artifactory-snapshots</name>
-			<url>s3://repo.mybahmni.org/artifactory/snapshot</url>
+			<id>bahmni-email-notification</id>
+			<url>s3://bahmni-email-notification/snapshot</url>
 		</snapshotRepository>
+		<repository>
+			<id>bahmni-email-notification</id>
+			<url>s3://bahmni-email-notification/release</url>
+		</repository>
 	</distributionManagement>
 
 	<dependencyManagement>
@@ -124,6 +127,11 @@
 				<groupId>org.kuali.maven.wagons</groupId>
 				<artifactId>maven-s3-wagon</artifactId>
 				<version>1.2.1</version>
+			</extension>
+			<extension>
+				<groupId>com.github.platform-team</groupId>
+				<artifactId>aws-maven</artifactId>
+				<version>6.0.0</version>
 			</extension>
 		</extensions>
 	</build>
