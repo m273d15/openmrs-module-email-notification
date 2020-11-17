@@ -31,7 +31,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<distributionManagement>
+<!--	<distributionManagement>
 		<snapshotRepository>
 			<id>bahmni-email-notification</id>
 			<url>s3://bahmni-email-notification/snapshot</url>
@@ -40,7 +40,7 @@
 			<id>bahmni-email-notification</id>
 			<url>s3://bahmni-email-notification/release</url>
 		</repository>
-	</distributionManagement>
+	</distributionManagement> -->
 
 	<dependencyManagement>
 		<dependencies>
@@ -120,6 +120,25 @@
 					<artifactId>maven-dependency-plugin</artifactId>
 					<version>2.4</version>
 				</plugin>
+				<plugin>
+					<groupId>org.sonatype.plugins</groupId>
+					<artifactId>nexus-staging-maven-plugin</artifactId>
+					<version>1.5.1</version>
+					<extensions>true</extensions>
+					<executions>
+						<execution>
+							<id>default-deploy</id>
+							<phase>deploy</phase>
+							<goals>
+								<goal>deploy</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<serverId>nexus-sonatype</serverId>
+						<nexusUrl>https://oss.sonatype.org</nexusUrl>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<extensions>
@@ -167,5 +186,16 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>nexus-sonatype</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>nexus-sonatype</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</repository>
+	</distributionManagement>
 
 </project>
