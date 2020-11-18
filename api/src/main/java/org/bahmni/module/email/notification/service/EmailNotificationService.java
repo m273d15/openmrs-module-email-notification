@@ -6,6 +6,13 @@ import org.bahmni.module.email.notification.EmailNotificationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMultipart;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -30,7 +37,7 @@ public class EmailNotificationService {
      * @throws EmailException When email ids/body not set
      * @throws EmailException Exception thrown when email is not sent
      */
-    public void send(String subject, String body, String[] to, String[] cc, String[] bcc) throws EmailNotificationException {
+    public void send(String subject, String body, String[] to, String[] cc, String[] bcc, String logo) throws EmailNotificationException {
         try {
             HtmlEmail htmlEmail = HtmlEmailFactory.getHtmlEmail();
             Properties properties = emailNotificationConfig.getProperties();
@@ -46,7 +53,22 @@ public class EmailNotificationService {
                 htmlEmail.addBcc(bcc);
             }
             htmlEmail.setSubject(subject);
-            htmlEmail.setHtmlMsg(body);
+            MimeMultipart multipart = new MimeMultipart("related");
+            BodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setContent(body,"text/html");
+            multipart.addBodyPart(messageBodyPart);
+            if(logo != null) {
+                DataSource fds = new FileDataSource(
+                        logo);
+
+                messageBodyPart.setDataHandler(new DataHandler(fds));
+                messageBodyPart.setHeader("Content-ID", "<image>");
+                multipart.addBodyPart(messageBodyPart);
+            }
+
+            htmlEmail.setContent(multipart);
+
+            //htmlEmail.setHtmlMsg(body);
             htmlEmail.setHostName(properties.getProperty("smtp.host"));
             htmlEmail.setAuthentication(
                     properties.getProperty("smtp.username"),
@@ -59,6 +81,8 @@ public class EmailNotificationService {
             throw new EmailNotificationException("Unable to load email-notification.properties, see details in README", e);
         } catch (EmailException e) {
             throw new EmailNotificationException("SMTP credentials are invalid", e);
+        } catch (MessagingException e){
+
         }
     }
 
