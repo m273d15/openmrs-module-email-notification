@@ -1,18 +1,16 @@
 package org.bahmni.module.email.notification.service;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.HtmlEmail;
+
+import org.apache.commons.mail.ImageHtmlEmail;
+import org.apache.commons.mail.resolver.DataSourceFileResolver;
 import org.bahmni.module.email.notification.EmailNotificationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
-import javax.mail.BodyPart;
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMultipart;
+import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -21,6 +19,8 @@ public class EmailNotificationService {
 
     @Autowired
     private EmailNotificationConfig emailNotificationConfig;
+
+    private Log log = LogFactory.getLog(this.getClass());
 
     public EmailNotificationService() {}
 
@@ -39,50 +39,41 @@ public class EmailNotificationService {
      */
     public void send(String subject, String body, String[] to, String[] cc, String[] bcc, String logo) throws EmailNotificationException {
         try {
-            HtmlEmail htmlEmail = HtmlEmailFactory.getHtmlEmail();
             Properties properties = emailNotificationConfig.getProperties();
-            htmlEmail.setFrom(
+            String htmlEmailTemplate = body;
+            log.warn(htmlEmailTemplate);
+            if(logo != null) {
+                htmlEmailTemplate += "<img src=" + "\"" + logo + "\"" + ">";
+            }
+            log.warn(htmlEmailTemplate);
+            ImageHtmlEmail email = new ImageHtmlEmail();
+            email.setDataSourceResolver(new DataSourceFileResolver(new File("/home/bahmni/patient_images/"), true));
+            email.setHostName(properties.getProperty("smtp.host"));
+            email.addTo("ippilimahesh1999@gmail.com");
+            if (cc != null) {
+                email.addCc(cc);
+            }
+            if (bcc != null) {
+                email.addBcc(bcc);
+            }
+            email.setFrom(
                     properties.getProperty("smtp.from.email.address"),
                     properties.getProperty("smtp.from.name")
             );
-            htmlEmail.addTo(to);
-            if (cc != null) {
-                htmlEmail.addCc(cc);
-            }
-            if (bcc != null) {
-                htmlEmail.addBcc(bcc);
-            }
-            htmlEmail.setSubject(subject);
-            MimeMultipart multipart = new MimeMultipart("related");
-            BodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setContent(body,"text/html");
-            multipart.addBodyPart(messageBodyPart);
-            if(logo != null) {
-                DataSource fds = new FileDataSource(
-                        logo);
-
-                messageBodyPart.setDataHandler(new DataHandler(fds));
-                messageBodyPart.setHeader("Content-ID", "<image>");
-                multipart.addBodyPart(messageBodyPart);
-            }
-
-            htmlEmail.setContent(multipart);
-
-            //htmlEmail.setHtmlMsg(body);
-            htmlEmail.setHostName(properties.getProperty("smtp.host"));
-            htmlEmail.setAuthentication(
+            email.setSubject(subject);
+            email.setHtmlMsg(htmlEmailTemplate);
+            email.setTextMsg("Your email client does not support HTML messages");
+            email.setAuthentication(
                     properties.getProperty("smtp.username"),
                     properties.getProperty("smtp.password")
             );
-            htmlEmail.setSmtpPort(Integer.parseInt(properties.getProperty("smtp.port")));
-            htmlEmail.setSSLOnConnect(Boolean.parseBoolean(properties.getProperty("smtp.ssl")));
-            htmlEmail.send();
+            email.setSmtpPort(Integer.parseInt(properties.getProperty("smtp.port")));
+            email.setSSLOnConnect(Boolean.parseBoolean(properties.getProperty("smtp.ssl")));
+            email.send();
         } catch (IOException e) {
             throw new EmailNotificationException("Unable to load email-notification.properties, see details in README", e);
         } catch (EmailException e) {
             throw new EmailNotificationException("SMTP credentials are invalid", e);
-        } catch (MessagingException e){
-
         }
     }
 
