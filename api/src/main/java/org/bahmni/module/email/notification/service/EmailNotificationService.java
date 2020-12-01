@@ -49,7 +49,7 @@ public class EmailNotificationService {
             ImageHtmlEmail email = new ImageHtmlEmail();
             email.setDataSourceResolver(new DataSourceFileResolver(new File("/home/bahmni/patient_images/"), true));
             email.setHostName(properties.getProperty("smtp.host"));
-            email.addTo("ippilimahesh1999@gmail.com");
+            email.addTo(to);
             if (cc != null) {
                 email.addCc(cc);
             }
