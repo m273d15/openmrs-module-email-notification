@@ -1,7 +1,5 @@
 package org.bahmni.module.email.notification.service;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.mail.EmailException;
 
 import org.apache.commons.mail.ImageHtmlEmail;
@@ -19,8 +17,6 @@ public class EmailNotificationService {
 
     @Autowired
     private EmailNotificationConfig emailNotificationConfig;
-
-    private Log log = LogFactory.getLog(this.getClass());
 
     public EmailNotificationService() {}
 
@@ -41,11 +37,9 @@ public class EmailNotificationService {
         try {
             Properties properties = emailNotificationConfig.getProperties();
             String htmlEmailTemplate = body;
-            log.warn(htmlEmailTemplate);
             if(logo != null) {
                 htmlEmailTemplate += "<img src=" + "\"" + logo + "\"" + ">";
             }
-            log.warn(htmlEmailTemplate);
             ImageHtmlEmail email = new ImageHtmlEmail();
             email.setDataSourceResolver(new DataSourceFileResolver(new File("/home/bahmni/patient_images/"), true));
             email.setHostName(properties.getProperty("smtp.host"));
