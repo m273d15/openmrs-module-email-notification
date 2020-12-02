@@ -38,10 +38,13 @@ public class EmailNotificationService {
             Properties properties = emailNotificationConfig.getProperties();
             String htmlEmailTemplate = body;
             if(logo != null) {
-                htmlEmailTemplate += "<img src=" + "\"" + logo + "\"" + ">";
+                htmlEmailTemplate += "<img src=" + "\"" + logo + "\"" + "alt='Logo' title='Logo' style='display:block;' width='200' height='100' />";
             }
             ImageHtmlEmail email = new ImageHtmlEmail();
-            email.setDataSourceResolver(new DataSourceFileResolver(new File("/home/bahmni/patient_images/"), true));
+
+            String locationOfLogo = logo.substring(0, logo.lastIndexOf('/') + 1);
+
+            email.setDataSourceResolver(new DataSourceFileResolver(new File(locationOfLogo), true));
             email.setHostName(properties.getProperty("smtp.host"));
             email.addTo(to);
             if (cc != null) {
