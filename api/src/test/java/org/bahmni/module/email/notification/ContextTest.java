@@ -34,6 +34,6 @@ public class ContextTest extends BaseModuleContextSensitiveTest {
 
         String BODY = "This is a test email";
 
-        emailNotificationService.send(SUBJECT, BODY, new String[]{"someemail@gmail.com"}, null, null);
+        emailNotificationService.send(SUBJECT, BODY, new String[]{"someemail@gmail.com"}, null, null, null);
     }
 }
