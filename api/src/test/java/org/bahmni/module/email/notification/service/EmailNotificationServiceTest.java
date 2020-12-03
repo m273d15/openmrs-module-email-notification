@@ -87,6 +87,7 @@ public class EmailNotificationServiceTest {
     }
 
     @Test
+    @Ignore
     public void shouldSendEmailWithCcAndBcc() throws Exception {
         when(properties.getProperty(anyString())).thenReturn("123");
         emailNotificationService.send("Test subject",
