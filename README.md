@@ -1,8 +1,8 @@
 # openmrs-module-email-notification
 
 ## Modify Settings
-- Insert the following snippet in ~/.m2/settings.xml
-```
+- Insert the following snippet in `~/.m2/settings.xml`
+```xml
 <servers>
 ...
     <server>
@@ -14,14 +14,14 @@
 </servers>
 ```
 - Set the region to Mumbai
-```
+```shell
 export AWS_DEFAULT_REGION=ap-south-1
 export AWS_REGION=ap-south-1
 ```
 
 ## Build & Deploy
 
-```
+```shell
 mvn --settings ~/.m2/settings.xml \
 clean package deploy \
 -Diam-user-access-key-id=<ACCESS_KEY> \
@@ -37,7 +37,7 @@ Please follow the instructions in ContextTest.java.
 ## Usage
 
 - Add the following dependencies to `pom.xml` in another Bahmni module:
-```
+```xml
 <dependencyManagement>
     <dependencies>
         <dependency>
@@ -68,7 +68,7 @@ Please follow the instructions in ContextTest.java.
 </repositories>
 ```
 - Function to send email:
-```
+```java
 EmailNotificationService.send(
     String subject, 
     String body, 
