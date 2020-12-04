@@ -1,6 +1,14 @@
 # openmrs-module-email-notification
 
-## Modify Settings
+## Build
+
+```shell
+mvn clean package
+```
+
+## Deploy
+
+### Modify Settings
 - Insert the following snippet in `~/.m2/settings.xml`
 ```xml
 <servers>
@@ -19,7 +27,7 @@ export AWS_DEFAULT_REGION=ap-south-1
 export AWS_REGION=ap-south-1
 ```
 
-## Build & Deploy
+### Maven Deploy
 
 ```shell
 mvn --settings ~/.m2/settings.xml \
