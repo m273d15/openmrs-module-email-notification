@@ -2,10 +2,29 @@
 name: Validate PR
 
 on:
+  push:
+    branches:
+    - "*"
   pull_request:
     branches: [ master ]
 
 jobs:
+
+  formatter:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 11
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+    - uses: axel-op/googlejavaformat-action@v3
+      with:
+        skipCommit: true
+        args: "--dry-run --set-exit-if-changed"
+
   build:
 
     runs-on: ubuntu-latest
