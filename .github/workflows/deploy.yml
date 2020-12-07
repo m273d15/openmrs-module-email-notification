@@ -1,0 +1,42 @@
+name: Deploy
+
+on: [ workflow_dispatch ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+
+    - name: Create maven settings.xml
+      run: |
+        cat <<EOT >> settings.xml
+        <settings>
+          <servers>
+            <server>
+              <id>bahmi-email-notification</id>
+              <username>${iam-user-access-key-id}</username>
+              <password>${iam-user-secret-key-id}</password>
+            </server>
+          </servers>
+        </settings>
+        EOT
+
+    - name: Build, Test and Deploy
+      run: |
+        mvn -B --settings ./settings.xml \
+          package deploy \
+          -Diam-user-access-key-id=$AWS_ACCESS_KEY \
+          -Diam-user-secret-key=$AWS_SECRET_KEY
+      env:
+        AWS_DEFAULT_REGION: ap-south-1
+        AWS_REGION: ap-south-1
+        AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+        AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
