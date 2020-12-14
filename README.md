@@ -8,7 +8,14 @@ mvn clean package
 
 ## Deploy
 
-### Modify Settings
+### With GitHub Action Workflow
+[Trigger the deploy workflow](https://github.blog/changelog/2020-07-06-github-actions-manual-triggers-with-workflow_dispatch/) via the `Run workflow` drop-down button on the [workflow page](https://github.com/Bahmni-Covid19/openmrs-module-email-notification/actions?query=workflow%3ADeploy) (select branch `master`).
+
+The button is only visible for developers with write permissions to the repository.
+
+### With Maven
+
+#### Modify Settings
 - Insert the following snippet in `~/.m2/settings.xml`
 ```xml
 <servers>
@@ -27,7 +34,7 @@ export AWS_DEFAULT_REGION=ap-south-1
 export AWS_REGION=ap-south-1
 ```
 
-### Maven Deploy
+#### Maven Deploy
 
 ```shell
 mvn --settings ~/.m2/settings.xml \
